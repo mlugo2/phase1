@@ -46,8 +46,6 @@ void split( char line[], char comm[], char p1[], char p2[])
 
 	int len, i, j;
         int start = 0, end = 0;         // Hold location for start and end of sinle word.
-        char temp1[10], temp2[10], temp3[10], temp4[10] temp5[10];
-
 	len = strlen(line);
 
         if ( line[len-1] == '\n')
@@ -55,15 +53,31 @@ void split( char line[], char comm[], char p1[], char p2[])
 
 	i = 0;
         j = 0;
-   
-        // In case any spaces are pressed before the command
-        while ( line[i] == ' ')  
-        {       i++; 
-                start = i; 
+        while( line[i] != '\0')
+        {
+                
+                // In case any spaces are pressed before the command
+                while ( line[j] == ' ')  
+                {       j++; 
+                        start = j; 
+                }
+
+                switch(j)
+                {
+                        
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        default:
+                        
+                }
+                
+                //if( line[i] == ' ' && line[i-1] != ' ')
+                    
+                ++i;                
         }
-
-        
-
 
         printf("%d", start);
 
