@@ -5,9 +5,11 @@
 // Function prototypes
 char * s_gets(char * st, int n);
 void split (char [], char [], char [], char []);
+void clear(char[], int n);
 
 int main()
 {
+        system("clear");
 
 	const char *commands[8];
 
@@ -22,15 +24,13 @@ int main()
 
 	char name[80], line[80], comm[20], p1[10], p2[10];
 	int len, n;
-	_Bool findComm = 0;
-
-	// Initialize char arrays
-	comm[0] = '\0';
-	p1[0] = '\0';
-	p2[0] = '\0';
-
+	_Bool findComm = 1;
 
 	do{
+                // This function clears command and parameters
+                clear(comm, 20);
+                clear(p1, 10);
+                clear(p2, 10);
 
 		// Promnt user for command line
 		printf("~command>: ");
@@ -39,15 +39,24 @@ int main()
 		// Split up the line into the command and parameters
 		split(line, comm, p1, p2);
 
-		if (strcmp(comm,"exit")<0)
-			findComm = 1;
 
-		printf("%d", findComm);
-	
+                // Display command and parameters
+                printf("Command: @%s@\n", comm);
+                printf("P1: %s\n", p1);
+                printf("P2: %s\n", p2);
 
-	}while(findComm);
+	}while(!strcmp(comm,"exit") == 0);
+        printf("Thank you! Bye~\n");
 
 	return 0;
+}
+
+void clear( char string[], int n)
+{
+        int i;
+        for (i = 0; i < n; i++)
+                string[i] = '\0';
+
 }
 
 char * s_gets(char * st, int n)
@@ -86,16 +95,20 @@ void split( char line[], char comm[], char p1[], char p2[])
 	{
 
 		temp1[j] = line[i];
+                
 		++j;
 		++i;
-
-		if (line[i] == ' ')
+ 
+		if (line[i] == ' ' || line[i] == '\0')
 		{
 			temp1[j] = '\0';
 			break;
 		}
-	}
 
+                
+	}
+        
+       
 	strcpy(comm, temp1);
 
 	// To find the position of the first characters
