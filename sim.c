@@ -6,6 +6,8 @@
 char * s_gets(char * st, int n);
 void split (char [], char [], char [], char []);
 void clear(char[], int n);
+_Bool authenticator(char [], char [], char []);
+void displayCommnads();
 
 int main()
 {
@@ -27,7 +29,7 @@ int main()
 	_Bool findComm = 1;
 
 	do{
-                // This function clears command and parameters
+                // These function clears command and parameters
                 clear(comm, 20);
                 clear(p1, 10);
                 clear(p2, 10);
@@ -40,15 +42,43 @@ int main()
 		split(line, comm, p1, p2);
 
 
-                // Display command and parameters
+                /*/ Display command and parameters
                 printf("Command: @%s@\n", comm);
                 printf("P1: %s\n", p1);
-                printf("P2: %s\n", p2);
+                printf("P2: %s\n", p2);*/
+
+                // This function authenticates commands and parameters
+                authenticator(comm, p1, p2);
 
 	}while(!strcmp(comm,"exit") == 0);
         printf("Thank you! Bye~\n");
 
 	return 0;
+}
+
+_Bool authenticator(char comm[], char p1[], char p2[])
+{
+        if(!strcmp(comm,"load"))
+                // Check for needed parameters
+                printf("Command is load\n");
+        else if(!strcmp(comm,"execute"))
+                printf("Command is execute\n");
+        else if(!strcmp(comm,"debug"))
+                printf("Command is debug\n");
+        else if(!strcmp(comm,"dump"))
+                // Check for needed parameters
+                printf("Command is dump\n");
+        else if(!strcmp(comm,"help"))
+                printf("Command is help\n");
+        else if(!strcmp(comm,"assemble"))
+                // Check for needed parameters
+                printf("Command is assemble\n");
+        else if(!strcmp(comm,"directory"))
+                system("ls");
+        else if(!strcmp(comm,"exit"))
+                printf("Command is exit\n");
+        else
+               printf("Command is not recognized\n"); // ¯\_(ツ)_/¯
 }
 
 void clear( char string[], int n)
