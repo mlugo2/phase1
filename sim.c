@@ -1,3 +1,14 @@
+/********************************************************
+*  Marco Lugo                                           *
+*  CMPE 3334                                            *
+*  2/21/2015                                            *
+*                                                       *
+*  This program is a simulation of a command line       *
+*  interpreter. For phase 1 only the commands:          *
+*  help, directory, and exit are implemented but        *
+*  all commands are recognized.                         *
+********************************************************/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -8,14 +19,15 @@ void split (char [], char [], char [], char []);
 void clear(char[], int n);
 void authenticator(char [], char [], char []);
 void displayCommnads();
+void welcomeMessage();
 
 int main()
 {
-        system("clear");
+        // char arrays for input, command, and parameters
+	char line[80], comm[20], p1[10], p2[10];
 
-	char name[80], line[80], comm[20], p1[10], p2[10];
-	int len, n;
-	_Bool findComm = 1;
+        // Display welcome message
+        welcomeMessage();
 
 	do{
                 // These functions clear command and parameters
@@ -39,8 +51,22 @@ int main()
 	return 0;
 }
 
+
+/********************************************************
+*               authenticator()                         *
+*                                                       *
+*  This fucntion takes three char arrays as paramters.  *
+*  Using embedded if/else statements it determines      *
+*  which commands require paramaters as well as which   *
+*  don't.                                               *
+********************************************************/
 void authenticator(char comm[], char p1[], char p2[])
 {
+
+        /* If no paramaters needed only parameter 1 is checked.
+           If only one parameter is needed both parameters are checked.
+           If two parameters are needed both are checked.
+        */
         if(!strcmp(comm,"load"))
                  {
                         if(p1[0] == '\0')
@@ -103,6 +129,12 @@ void authenticator(char comm[], char p1[], char p2[])
         }
 }
 
+/********************************************************
+*                       clear()                         *
+*                                                       *
+*  This fucntion takes any given char array and fills   * 
+*  it with null characters to erase previous inputs.    *
+********************************************************/
 void clear( char string[], int n)
 {
         int i;
@@ -111,6 +143,12 @@ void clear( char string[], int n)
 
 }
 
+/********************************************************
+*                  displayCommnads()                    *
+*                                                       *
+*  This fucntion displays all available commands and    *
+*  parameters.                                          *
+********************************************************/
 void displayCommnads()
 {
 
@@ -118,6 +156,12 @@ void displayCommnads()
 
 }
 
+/********************************************************
+*                     s_gets()                          *
+*                                                       *
+*  This fucntion takes in a char array and array length *
+*  to get rid of any '\n'.
+********************************************************/
 char * s_gets(char * st, int n)
 {
 	char * ret_val;
@@ -136,6 +180,14 @@ char * s_gets(char * st, int n)
 	return ret_val;
 }
 
+
+/********************************************************
+*                       split()                         *
+*                                                       *
+*  This fucntion takes in the users input and divides   *
+*  into the cammand and two parameters. Any more        *
+*  parameters than two are ignored.                     *
+********************************************************/
 void split( char line[], char comm[], char p1[], char p2[])
 {
 
@@ -223,5 +275,34 @@ void split( char line[], char comm[], char p1[], char p2[])
 		strcpy(p2, temp1);
 	}
 
+}
+
+void welcomeMessage()
+{
+        static unsigned char asciipic_txt[] = {                                                
+        0x20, 0x5f, 0x5f, 0x5f, 0x5f, 0x5f, 0x20, 0x5f, 0x20, 0x20, 0x20, 0x20,
+        0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x5f, 0x5f, 0x5f,
+        0x5f, 0x5f, 0x20, 0x5f, 0x5f, 0x5f, 0x5f, 0x5f, 0x20, 0x0a, 0x2f, 0x20,
+        0x20, 0x5f, 0x5f, 0x5f, 0x28, 0x5f, 0x29, 0x20, 0x20, 0x20, 0x20, 0x20,
+        0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x7c, 0x20, 0x20, 0x5f, 0x20, 0x20,
+        0x2f, 0x20, 0x20, 0x5f, 0x5f, 0x5f, 0x7c, 0x0a, 0x5c, 0x20, 0x60, 0x2d,
+        0x2d, 0x2e, 0x20, 0x5f, 0x20, 0x5f, 0x20, 0x5f, 0x5f, 0x20, 0x5f, 0x5f,
+        0x5f, 0x20, 0x20, 0x20, 0x7c, 0x20, 0x7c, 0x20, 0x7c, 0x20, 0x5c, 0x20,
+        0x60, 0x2d, 0x2d, 0x2e, 0x20, 0x0a, 0x20, 0x60, 0x2d, 0x2d, 0x2e, 0x20,
+        0x7c, 0x20, 0x7c, 0x20, 0x27, 0x5f, 0x20, 0x60, 0x20, 0x5f, 0x20, 0x5c,
+        0x20, 0x20, 0x7c, 0x20, 0x7c, 0x20, 0x7c, 0x20, 0x7c, 0x60, 0x2d, 0x2d,
+        0x2e, 0x20, 0x5c, 0x0a, 0x2f, 0x5c, 0x5f, 0x5f, 0x2f, 0x20, 0x7c, 0x20,
+        0x7c, 0x20, 0x7c, 0x20, 0x7c, 0x20, 0x7c, 0x20, 0x7c, 0x20, 0x7c, 0x20,
+        0x5c, 0x20, 0x5c, 0x5f, 0x2f, 0x20, 0x2f, 0x5c, 0x5f, 0x5f, 0x2f, 0x20,
+        0x2f, 0x0a, 0x5c, 0x5f, 0x5f, 0x5f, 0x5f, 0x2f, 0x7c, 0x5f, 0x7c, 0x5f,
+        0x7c, 0x20, 0x7c, 0x5f, 0x7c, 0x20, 0x7c, 0x5f, 0x7c, 0x20, 0x20, 0x5c,
+        0x5f, 0x5f, 0x5f, 0x2f, 0x5c, 0x5f, 0x5f, 0x5f, 0x5f, 0x2f, 0x0a
+
+        };
+
+        system("clear");
+        printf("%s\n", asciipic_txt);
+        printf("Welcome to Sim OS 1.0\n");
+        printf("For supported commands type: help\n\n");
 
 }
