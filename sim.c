@@ -15,7 +15,7 @@
 
 // Function prototypes
 char * s_gets(char * st, int n);
-void split (char [], char [], char [], char []);
+void split (char [], char [], char [], char [], char []);
 void clear(char[], int n);
 void authenticator(char [], char [], char []);
 void displayCommnads();
@@ -24,7 +24,7 @@ void welcomeMessage();
 int main()
 {
         // char arrays for input, command, and parameters
-	char line[80], comm[20], p1[10], p2[10];
+	char line[80], comm[20], p1[10], p2[10], extra[20];
 
         // Display welcome message
         welcomeMessage();
@@ -34,16 +34,22 @@ int main()
                 clear(comm, 20);
                 clear(p1, 10);
                 clear(p2, 10);
+		clear(extra,20);
 
 		// Promnt user for command line
 		printf("~command>: ");
 		s_gets(line, 80);
 
 		// Split up the line into the command and parameters
-		split(line, comm, p1, p2);
+		split(line, comm, p1, p2, extra);
 
-                // This function authenticates commands and parameters
-                authenticator(comm, p1, p2);
+		// Check for extra parameters
+		if (extra[0] != '\0')
+			printf("Error: Too many parameters.\n");
+		else
+                	// This function authenticates commands and parameters
+                	authenticator(comm, p1, p2);
+
 
 	}while(!strcmp(comm,"exit") == 0 || p1[0] != '\0');
         printf("Thank you! Bye~\n");
@@ -92,9 +98,9 @@ void authenticator(char comm[], char p1[], char p2[])
                 }
         else if(!strcmp(comm,"dump"))
                 {
-                        if(!strcmp(p1,"start") == 0)
+                        if(p1[0] == '\0')
                                 printf("Error: First parameter incorrect.\n");
-                        else if(!strcmp(p2,"end") == 0)
+                        else if(p2[0] == '\0')
                                 printf("Error: Second parameter incorrect.\n");
                         else
                                 printf("Command is %s.\n", comm);
@@ -152,7 +158,14 @@ void clear( char string[], int n)
 void displayCommnads()
 {
 
-        printf("\nload filename\nexecute\ndebug\ndump start end\nhelp\nassemble filename\ndirectory\nexit\n\n");
+        printf("\nload filename: Loads the specified file.\n\n");
+	printf(	"execute: Executes the program that was previously loaded in memory.\n\n");
+	printf(	"debug: Executes in debug mode.\n\n");
+	printf(	"dump start end: Calls the dump function, passing the values of start and end.\n\n");
+	printf(	"help: Prints out a list of available commands.\n\n");
+	printf(	"assemble filename: Assembles an SIC assembly language program into a load module and store it in a file.\n\n");
+	printf(	"directory: Lists the files stored in the current directory.\n\n");
+	printf(	"exit: Exit from the simulator.\n\n");
 
 }
 
@@ -160,7 +173,7 @@ void displayCommnads()
 *                     s_gets()                          *
 *                                                       *
 *  This fucntion takes in a char array and array length *
-*  to get rid of any '\n'.
+*  to get rid of any '\n'.				*
 ********************************************************/
 char * s_gets(char * st, int n)
 {
@@ -186,43 +199,39 @@ char * s_gets(char * st, int n)
 *                                                       *
 *  This fucntion takes in the users input and divides   *
 *  into the cammand and two parameters. Any more        *
-*  parameters than two are ignored.                     *
+*  parameters than two are placed in extra char array.  *
 ********************************************************/
-void split( char line[], char comm[], char p1[], char p2[])
+void split( char line[], char comm[], char p1[], char p2[], char extra[])
 {
 
-	int len, i, j;
-        char temp1[20];
-
-	temp1[0] = '\0';
+	int i, j;
 
 	i = 0;
 	j = 0;
-	// To find the position of the first character
+
+	// Traverses any spaces to the first character
 	while ( line[i] == ' ')
 		i++;
 
+	// Once a character is found copy into comm
+	// until another space or null character.
 	while( line[i] != '\0')
 	{
 
-		temp1[j] = line[i];
+		comm[j] = line[i];
                 
 		++j;
 		++i;
  
 		if (line[i] == ' ' || line[i] == '\0')
 		{
-			temp1[j] = '\0';
+			comm[j] = '\0';
 			break;
 		}
-
-                
+    
 	}
-        
-       
-	strcpy(comm, temp1);
 
-	// To find the position of the first characters
+	// Find the next string to be copied into first paramenter.
 	while ( line[i] == ' ')
 		i++;
 
@@ -232,24 +241,21 @@ void split( char line[], char comm[], char p1[], char p2[])
 		while( line[i] != '\0')
 		{
 
-			temp1[j] = line[i];
+			p1[j] = line[i];
 
 			++j;
 			++i;
 
 			if (line[i] == ' ' || line[i] == '\0')
 			{
-				temp1[j] = '\0';
+				p1[j] = '\0';
 				break;
 			}
 		}
-
-
-		strcpy(p1, temp1);
 	}
 
 
-	// To find the position of the first characters
+	// Find the next string to be copied into second paramenter.
 	while ( line[i] == ' ')
 		i++;
 
@@ -259,24 +265,52 @@ void split( char line[], char comm[], char p1[], char p2[])
 		while( line[i] != '\0')
 		{
 
-			temp1[j] = line[i];
+			p2[j] = line[i];
 
 			++j;
 			++i;
 
 			if (line[i] == ' ' || line[i] == '\0')
 			{
-				temp1[j] = '\0';
+				p2[j] = '\0';
+				break;
+			}
+		}
+	}
+
+	// Find the next string
+	while ( line[i] == ' ')
+		i++;
+
+	if ( line[i] != '\0' )
+	{
+		j = 0;
+		while( line[i] != '\0')
+		{
+
+			extra[j] = line[i];
+
+			++j;
+			++i;
+
+			if (line[i] == ' ' || line[i] == '\0')
+			{
+				extra[j] = '\0';
 				break;
 			}
 		}
 
-
-		strcpy(p2, temp1);
 	}
 
 }
 
+
+/********************************************************
+*              welcomeMessage()                         *
+*                                                       *
+*  This fucntion displays a welcome message to the user *
+*  as well as which command to start with.		*
+********************************************************/
 void welcomeMessage()
 {
         static unsigned char asciipic_txt[] = {                                                
@@ -305,4 +339,4 @@ void welcomeMessage()
         printf("Welcome to Sim OS 1.0\n");
         printf("For supported commands type: help\n\n");
 
-}
+} 
